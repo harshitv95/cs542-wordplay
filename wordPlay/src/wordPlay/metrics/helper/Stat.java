@@ -16,11 +16,40 @@ import java.util.Map;
  */
 public enum Stat {
 
-	SENTENCE_COUNT(null),
+	SENTENCE_COUNT(new StatCalculator<Double>() {
+		@Override
+		public Double calculate(Map<String, Double> map, String word, String statKey) {
+			double val = map.getOrDefault(statKey, 0.0);
+			if (word.trim().endsWith("."))
+				map.put(statKey, val += 1);
+			return val;
+		}
+	}),
 
-	WORD_COUNT(null),
+	WORD_COUNT(new StatCalculator<Double>() {
 
-	CHAR_COUNT(null),;
+		@Override
+		public Double calculate(Map<String, Double> map, String word, String statKey) {
+			if (word.trim().isEmpty())
+				throw new RuntimeException("Empty line or Empty word detected");
+			double val = map.getOrDefault(statKey, 0.0);
+			map.put(statKey, val += 1);
+			return val;
+		}
+	}),
+
+	CHAR_COUNT(new StatCalculator<Double>() {
+
+		@Override
+		public Double calculate(Map<String, Double> map, String word, String statKey) {
+			if (word.trim().isEmpty())
+				throw new RuntimeException("Empty line or Empty word detected");
+			double val = map.getOrDefault(statKey, 0.0);
+			map.put(statKey, val += word.length());
+			return val;
+		}
+
+	}),;
 
 	private StatCalculator<Double> calc;
 

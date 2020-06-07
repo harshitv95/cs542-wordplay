@@ -56,7 +56,9 @@ public class Results implements FileDisplayInterface, StdoutDisplayInterface, Cl
 
 	@Override
 	public void close() throws IOException {
+		stdOut.flush();
 		stdOut.close();
+		fileOut.flush();
 		fileOut.close();
 	}
 
