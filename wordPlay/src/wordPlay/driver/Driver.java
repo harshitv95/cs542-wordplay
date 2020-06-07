@@ -1,5 +1,8 @@
 package wordPlay.driver;
 
+import wordPlay.helpers.ValidationHelper;
+import wordPlay.metrics.MetricsCalculator;
+
 /**
  * @author John Doe
  *
@@ -17,6 +20,13 @@ public class Driver {
 			System.exit(0);
 		}
 		System.out.println("Hello World! Lets get started with the assignment");
-
+		
+		ValidationHelper validation = new ValidationHelper();
+		validation.critical().validateFile(args[0]); // Validating Input File
+		validation.critical().validateFile(args[1]); // Validating Output File
+		validation.critical().validateFile(args[2]); // Validating Metrics Output File
+		
+		MetricsCalculator metrics = new MetricsCalculator();
+		
 	}
 }
