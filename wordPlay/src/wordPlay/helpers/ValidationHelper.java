@@ -34,12 +34,18 @@ public class ValidationHelper {
 		return true;
 	}
 
-	public boolean validateFile(String filename) {
-		boolean retVal = validateOnlyAlphaNumeric(filename, "File name (" + filename
-				+ ") should not contain special characters, it should only contain alpha-numeric characters");
-		if (!retVal)
-			return retVal;
+	public boolean validateFilename(String filename) {
+		for (String s : filename.split("\\.")) {
+			if (!validateOnlyAlphaNumeric(s, "File name (" + filename
+					+ ") should not contain special characters, it should only contain alpha-numeric characters"))
+				return false;
+		}
+		return true;
+	}
 
+	public boolean validateFile(String filename) {
+		if (!validateFilename(filename))
+			return false;
 		if (!Files.exists(Paths.get(filename))) {
 			System.err.println("File [" + filename + "] does not exist.");
 			if (critical)

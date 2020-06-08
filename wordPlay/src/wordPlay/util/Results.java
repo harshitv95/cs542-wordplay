@@ -21,6 +21,10 @@ public class Results implements FileDisplayInterface, StdoutDisplayInterface, Cl
 		out.write(str);
 		out.flush();
 	}
+	
+	protected void writeLn(Writer out) throws IOException {
+		out.flush();
+	}
 
 	@Override
 	public void printToStdOut(String s) {
@@ -55,11 +59,15 @@ public class Results implements FileDisplayInterface, StdoutDisplayInterface, Cl
 	}
 
 	@Override
-	public void close() throws IOException {
-		stdOut.flush();
-		stdOut.close();
-		fileOut.flush();
-		fileOut.close();
+	public void close() {
+		try {
+			stdOut.flush();
+			stdOut.close();
+			fileOut.flush();
+			fileOut.close();
+		} catch (IOException e) {
+			throw new RuntimeException("Failed to close results", e);
+		}
 	}
 
 	@Override

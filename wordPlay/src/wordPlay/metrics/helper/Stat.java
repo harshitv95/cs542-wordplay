@@ -45,7 +45,7 @@ public enum Stat {
 			if (word.trim().isEmpty())
 				throw new RuntimeException("Empty line or Empty word detected");
 			double val = map.getOrDefault(statKey, 0.0);
-			map.put(statKey, val += word.length());
+			map.put(statKey, val += word.replace(".", "").length());
 			return val;
 		}
 
