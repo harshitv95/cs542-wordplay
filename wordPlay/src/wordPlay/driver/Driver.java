@@ -45,6 +45,7 @@ public class Driver {
 		}
 		WordRotator rotator = new WordRotator();
 		MetricsCalculator metrics = new MetricsCalculator();
+		
 		metrics.registerCalculator(new MetricCalculator<String>() {
 			@Override
 			public String calculate(Map<String, Double> stats) {
@@ -61,6 +62,7 @@ public class Driver {
 				return "AVG_WORD_LENGTH = " + String.format("%.02f", (charCount / wordCount));
 			}
 		});
+		
 		try (Results outputRes = new Results(args[1]); Results metricRes = new Results(args[2]);) {
 
 			String word;
@@ -83,6 +85,9 @@ public class Driver {
 					outputRes.printToStdOut("\n");
 				}
 			}
+			String calculatedMetrics = metrics.calculate();
+			metricRes.printToFile(calculatedMetrics);
+			metricRes.printToStdOut(calculatedMetrics);
 		} catch (IOException e) {
 			throw new RuntimeException("Failed to read word from file", e);
 		}
