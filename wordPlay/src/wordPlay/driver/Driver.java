@@ -30,11 +30,11 @@ public class Driver {
 			System.exit(0);
 		}
 
-		ValidationHelper validation = new ValidationHelper();
+		ValidationHelper validation = new ValidationHelper().critical();
 
-		validation.critical().validateFile(args[0]); // Validating Input File
-		validation.critical().validateFilename(args[1]); // Validating Output File
-		validation.critical().validateFilename(args[2]); // Validating Metrics Output File
+		validation.validateFile(args[0]); // Validating Input File
+		validation.validateFilename(args[1]); // Validating Output File
+		validation.validateFilename(args[2]); // Validating Metrics Output File
 
 		FileProcessor fp;
 
@@ -44,8 +44,8 @@ public class Driver {
 			throw new RuntimeException("Failed to open input file", e);
 		}
 		WordRotator rotator = new WordRotator();
-		MetricsCalculator metrics = new MetricsCalculator();
-		
+		MetricsCalculator<String> metrics = new MetricsCalculator<>();
+
 		metrics.registerCalculator(new MetricCalculator<String>() {
 			@Override
 			public String calculate(Map<String, Double> stats) {
@@ -62,34 +62,39 @@ public class Driver {
 				return "AVG_WORD_LENGTH = " + String.format("%.02f", (charCount / wordCount));
 			}
 		});
-		
+
 		try (Results outputRes = new Results(args[1]); Results metricRes = new Results(args[2]);) {
 
 			String word;
-			boolean appendPeriod;
 			int idx = 0;
 			while ((word = fp.poll()) != null) {
-				appendPeriod = false;
-				word = word.trim();
+
+				validation.validateNotEmpty(word, "Empty line detected");
+				validation.validateOnlyAlphaNumeric(word,
+						"Word [" + word + "] contains other than alpha-numeric characters");
+
 				metrics.processWord(word);
-				if (word.endsWith(".")) {
-					appendPeriod = true;
-					word = word.substring(0, word.length() - 1);
-				}
-				word = rotator.rotate(word, ++idx) + (!appendPeriod ? "" : ".");
-				outputRes.printToFile(word + " ");
-				outputRes.printToStdOut(word + " ");
-				if (appendPeriod) {
+				word = rotator.rotate(word, ++idx);
+
+				if (word.trim().endsWith(".")) {
 					idx = 0;
-					outputRes.printToFile("\n");
-					outputRes.printToStdOut("\n");
-				}
+					word += System.lineSeparator();
+				} else
+					word += " ";
+
+				outputRes.printToFile(word);
+				outputRes.printToStdOut(word);
 			}
+
+			if (metrics.getStat(Stat.WORD_COUNT.name()) == 0.0)
+				throw new RuntimeException("Input file was empty");
+
 			String calculatedMetrics = metrics.calculate();
 			metricRes.printToFile(calculatedMetrics);
 			metricRes.printToStdOut(calculatedMetrics);
-		} catch (IOException e) {
-			throw new RuntimeException("Failed to read word from file", e);
+		} catch (Exception e) {
+			System.err.println("The following exception occurred:");
+			e.printStackTrace();
 		}
 
 	}

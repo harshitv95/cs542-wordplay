@@ -24,11 +24,24 @@ public class ValidationHelper {
 		return this.validateOnlyAlphaNumeric(str, "[" + str + "] contains non-alphanumeric characters");
 	}
 
+	public boolean validateNotEmpty(String str) {
+		return this.validateNotEmpty(str, "Empty word found");
+	}
+	
+	public boolean validateNotEmpty(String str, String message) {
+		if (str == null || str.trim().isEmpty()) {
+			if (this.critical)
+				throw new ValidationException(message);
+			return false;
+		}
+		return true;
+	}
+	
 	public boolean validateOnlyAlphaNumeric(String str, String message) {
-		if (str.matches(".*[^a-zA-Z0-9].*")) {
+		if (str.matches(".*[^a-zA-Z0-9\\.].*")) {
 			System.err.println(message);
 			if (critical)
-				throw new RuntimeException(message);
+				throw new ValidationException(message);
 			return false;
 		}
 		return true;
@@ -49,10 +62,23 @@ public class ValidationHelper {
 		if (!Files.exists(Paths.get(filename))) {
 			System.err.println("File [" + filename + "] does not exist.");
 			if (critical)
-				throw new RuntimeException("File [" + filename + "] does not exist.");
+				throw new ValidationException("File [" + filename + "] does not exist.");
 			return false;
 		}
 		return true;
 	}
 
+}
+
+class ValidationException extends RuntimeException {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
+	public ValidationException(String message) {
+		super("[VALIDATION FAILED] " + message);
+	}
+	
 }

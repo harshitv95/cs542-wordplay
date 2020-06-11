@@ -27,11 +27,8 @@ public enum Stat {
 	}),
 
 	WORD_COUNT(new StatCalculator<Double>() {
-
 		@Override
 		public Double calculate(Map<String, Double> map, String word, String statKey) {
-			if (word.trim().isEmpty())
-				throw new RuntimeException("Empty line or Empty word detected");
 			double val = map.getOrDefault(statKey, 0.0);
 			map.put(statKey, val += 1);
 			return val;
@@ -39,17 +36,14 @@ public enum Stat {
 	}),
 
 	CHAR_COUNT(new StatCalculator<Double>() {
-
 		@Override
 		public Double calculate(Map<String, Double> map, String word, String statKey) {
-			if (word.trim().isEmpty())
-				throw new RuntimeException("Empty line or Empty word detected");
 			double val = map.getOrDefault(statKey, 0.0);
 			map.put(statKey, val += word.replace(".", "").length());
 			return val;
 		}
-
-	}),;
+	}),
+	;
 
 	private StatCalculator<Double> calc;
 
@@ -57,10 +51,20 @@ public enum Stat {
 		this.calc = calc;
 	}
 
+	/**
+	 * Calculate the {@code Stat} and store the result in {@code map}, and return the same
+	 * @param map
+	 * @param word
+	 * @return double value representing the value of the calculated Stat
+	 */
 	public Double calculate(Map<String, Double> map, String word) {
 		return this.calc.calculate(map, word, this.toString());
 	}
 
+	/**
+	 * Initializes all stats to 0.0
+	 * @param map
+	 */
 	public void initialize(Map<String, Double> map) {
 		if (!map.containsKey(this.toString()))
 			map.put(this.toString(), 0.0);
