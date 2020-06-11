@@ -33,8 +33,8 @@ public class Driver {
 		ValidationHelper validation = new ValidationHelper().critical();
 
 		validation.validateFile(args[0]); // Validating Input File
-		validation.validateFilename(args[1]); // Validating Output File
-		validation.validateFilename(args[2]); // Validating Metrics Output File
+		validation.validateNotEmpty(args[1], "Output filename was empty"); // Validating Output File
+		validation.validateNotEmpty(args[2], "Metrics filename was empty"); // Validating Metrics Output File
 
 		FileProcessor fp;
 

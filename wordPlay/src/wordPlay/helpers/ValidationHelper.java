@@ -47,20 +47,20 @@ public class ValidationHelper {
 		return true;
 	}
 
-	public boolean validateFilename(String filename) {
-		for (String s : filename.split("\\.")) {
-			if (!validateOnlyAlphaNumeric(s, "File name (" + filename
-					+ ") should not contain special characters, it should only contain alpha-numeric characters"))
-				return false;
-		}
-		return true;
-	}
+//	public boolean validateFilename(String filename) {
+//		for (String s : filename.split("\\.")) {
+//			if (!validateOnlyAlphaNumeric(s, "File name (" + filename
+//					+ ") should not contain special characters, it should only contain alpha-numeric characters"))
+//				return false;
+//		}
+//		return true;
+//	}
 
 	public boolean validateFile(String filename) {
-		if (!validateFilename(filename))
+		if (validateNotEmpty(filename, "Filename should not be empty"))
 			return false;
 		if (!Files.exists(Paths.get(filename))) {
-			System.err.println("File [" + filename + "] does not exist.");
+			System.err.println("File [" + Paths.get(filename).toAbsolutePath() + "] does not exist.");
 			if (critical)
 				throw new ValidationException("File [" + filename + "] does not exist.");
 			return false;
