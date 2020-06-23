@@ -11,7 +11,7 @@ import java.util.Map;
  * provided as parameter</li>
  * </ol>
  * 
- * @author harshitv
+ * @author Harshit Vadodaria
  *
  */
 public enum Stat {

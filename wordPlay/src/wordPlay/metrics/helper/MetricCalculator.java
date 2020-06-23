@@ -8,7 +8,7 @@ import wordPlay.metrics.MetricsCalculator;
  * An single-function interface declaring a method to calculate a specific
  * Metric, for {@link MetricsCalculator}
  * 
- * @author harshitv
+ * @author Harshit Vadodaria
  *
  * @param <Output>
  */

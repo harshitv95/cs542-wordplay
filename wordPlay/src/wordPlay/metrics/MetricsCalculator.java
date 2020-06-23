@@ -13,7 +13,7 @@ import wordPlay.metrics.helper.Stat;
  * the stats registered through the
  * {@link #registerCalculator(MetricCalculator)} method.
  * 
- * @author harshitv
+ * @author Harshit Vadodaria
  *
  * @param <Output> To type-restrict the MetricCalculator instances that can be
  *                 registered
