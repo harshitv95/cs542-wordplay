@@ -1,4 +1,4 @@
-# CSX42: Assignment 1
+# CS542: Assignment 1
 ## Name: Harshit Vadodaria
 
 -----------------------------------------------------------------------
@@ -75,19 +75,3 @@ Various boundary conditions are handled, like:
 `MetricsCalculator`) is 0
 3. Empty line - through the `ValidationHelper`, by checking if the word string is null or empty
 4. Words containing characters other than alphabets and numbers - through `ValidationHelper`
-
-
-
------------------------------------------------------------------------
-### Academic Honesty statement:
------------------------------------------------------------------------
-
-"I have done this assignment completely on my own. I have not copied
-it, nor have I given my solution to anyone else. I understand that if
-I am involved in plagiarism or cheating an official form will be
-submitted to the Academic Honesty Committee of the Watson School to
-determine the action that needs to be taken. "
-
-Date: June 10, 2020
-
-
